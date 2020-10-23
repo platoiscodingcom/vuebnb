@@ -1,15 +1,38 @@
 var app = new Vue({
-  //tells vue where to mount itself in the page
   el: '#app',
   data: {
     title: sample.title,
     address: sample.address,
     about: sample.about,
-    headerImageStyle:{
+    headerImageStyle: {
       'background-image': 'url(sample/header.jpg)'
     },
     amenities: sample.amenities,
     prices: sample.prices,
-    contracted: true
+    contracted: true,
+    modalOpen: false
+  },
+  methods: {
+    escapeKeyListener: function(evt) {
+      if (evt.keyCode === 27 && this.modalOpen) {
+        this.modalOpen = false;
+      }
+    }
+  },
+  watch: {
+    modalOpen: function() {
+      var className = 'modal-open';
+      if (this.modalOpen) {
+        document.body.classList.add(className);
+      } else {
+        document.body.classList.remove(className);
+      }
+    }
+  },
+  created: function() {
+    document.addEventListener('keyup', this.escapeKeyListener);
+  },
+  destroyed: function () {
+    document.removeEventListener('keyup', this.escapeKeyListener);
   }
 });
